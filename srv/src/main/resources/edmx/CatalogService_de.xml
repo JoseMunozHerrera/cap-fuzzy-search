@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Countries" EntityType="CatalogService.Countries">
+          <NavigationPropertyBinding Path="regions" Target="Regions"/>
+          <NavigationPropertyBinding Path="texts" Target="Countries_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Countries_texts"/>
+        </EntitySet>
+        <EntitySet Name="Countries_texts" EntityType="CatalogService.Countries_texts"/>
+        <EntitySet Name="Regions" EntityType="CatalogService.Regions">
+          <NavigationPropertyBinding Path="toCountries" Target="Countries"/>
+        </EntitySet>
+      </EntityContainer>
+      <EntityType Name="Countries">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="code1" Type="Edm.Int32"/>
+        <Property Name="alpha3" Type="Edm.String" MaxLength="3"/>
+        <Property Name="iso" Type="Edm.String" MaxLength="16"/>
+        <Property Name="region" Type="Edm.String" MaxLength="20"/>
+        <Property Name="sub_region" Type="Edm.String" MaxLength="40"/>
+        <Property Name="region_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="sub_region_code" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="regions" Type="Collection(CatalogService.Regions)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="texts" Type="Collection(CatalogService.Countries_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="CatalogService.Countries_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Countries_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="5" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Regions">
+        <Key>
+          <PropertyRef Name="country"/>
+          <PropertyRef Name="sub_code"/>
+        </Key>
+        <Property Name="country" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="sub_code" Type="Edm.String" MaxLength="5" Nullable="false"/>
+        <NavigationProperty Name="toCountries" Type="CatalogService.Countries">
+          <ReferentialConstraint Property="country" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="name" Type="Edm.String" MaxLength="80"/>
+        <Property Name="type" Type="Edm.String" MaxLength="80"/>
+        <Property Name="score" Type="Edm.Decimal" Scale="3" Precision="10"/>
+        <Property Name="descriptionSnippet" Type="Edm.String"/>
+      </EntityType>
+      <Annotations Target="CatalogService.Countries">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Path>name</Path>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="CatalogService.EntityContainer/Countries">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/descr">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/code">
+        <Annotation Term="Common.Label" String="Ländercode"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/code1">
+        <Annotation Term="Common.Label" String="code1"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/alpha3">
+        <Annotation Term="Common.Label" String="alpha3"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/iso">
+        <Annotation Term="Common.Label" String="iso"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/region">
+        <Annotation Term="Common.Label" String="region"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/sub_region">
+        <Annotation Term="Common.Label" String="sub_region"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/region_code">
+        <Annotation Term="Common.Label" String="region_code"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries/sub_region_code">
+        <Annotation Term="Common.Label" String="sub_region_code"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries_texts/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries_texts/descr">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Countries_texts/code">
+        <Annotation Term="Common.Label" String="Ländercode"/>
+      </Annotations>
+      <Annotations Target="CatalogService.EntityContainer/Regions">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/country">
+        <Annotation Term="Common.Label" String="country"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/sub_code">
+        <Annotation Term="Common.Label" String="sub_code"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/toCountries">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Countries"/>
+            <PropertyValue Property="CollectionPath" String="Countries"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="toCountries"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/name">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.Label" String="name"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/type">
+        <Annotation Term="Common.Label" String="type"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/score">
+        <Annotation Term="Common.Label" String="score"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+      </Annotations>
+      <Annotations Target="CatalogService.Regions/descriptionSnippet">
+        <Annotation Term="Common.Label" String="name"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,38 @@
+{
+    "name": "cap-fuzzy-search",
+    "version": "1.0.0",
+    "description": "SAP Cloud Application Programming Model Example with HANA Fuzzy/Fulltext Search",
+    "repository": "https://github.com/jungsap/cap-fuzzy-search",
+    "license": "ISC",
+    "dependencies": {
+        "@sap/cds": "^3.20.0",
+        "express": "^4.17.1",
+        "hdb": "^0.17.1"
+    },
+    "engines": {
+        "node": "^8.9 || ^10 || ^12"
+    },
+    "scripts": {
+        "build": "cds build/all --clean",
+        "deploy": "cds deploy",
+        "start": "cds run"
+    },
+    "files": [
+        "srv",
+        "db"
+    ],
+    "cds": {
+        "odata": {
+            "version": "v4"
+        },
+        "requires": {
+            "db": {
+                "kind": "hana",
+                "model": [
+                    "srv",
+                    "db"
+                ]
+            }
+        }
+    }
+}
